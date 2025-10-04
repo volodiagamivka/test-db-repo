@@ -15,7 +15,8 @@ def create_app():
     
     # Для Azure MySQL потрібно додати SSL параметри
     if 'azure.com' in db_host or 'mysql.database.azure.com' in db_host:
-        app.config['SQLALCHEMY_DATABASE_URI'] = f'mysql+pymysql://{db_user}:{db_password}@{db_host}/{db_name}?ssl_ca=&ssl_disabled=False'
+        # Azure MySQL вимагає SSL, але вимикаємо перевірку сертифіката
+        app.config['SQLALCHEMY_DATABASE_URI'] = f'mysql+pymysql://{db_user}:{db_password}@{db_host}/{db_name}?ssl_verify_cert=false&ssl_verify_identity=false'
     else:
         app.config['SQLALCHEMY_DATABASE_URI'] = f'mysql+pymysql://{db_user}:{db_password}@{db_host}/{db_name}'
     
